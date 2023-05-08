@@ -1,41 +1,71 @@
-const connection = require('../config/connection');
+const mongoose = require('mongoose');
 const { User, Thought, Reaction } = require('../models');
-const { getRandomUser, getRandomThought, getRandomReaction } = require('./data');
 
-// TODO: Update below:
-
-connection.on('error', (err) => err);
-
-connection.once('open', async () => {
-  console.log('MongoDB connected successfully');
-
-  // Delete existing data
-  await User.deleteMany({});
-  await Thought.deleteMany({});
-  await Reaction.deleteMany({});
-
-  // Create users
-  const users = [];
-  for (let i = 0; i < 20; i++) {
-    const user = getRandomUser();
-    users.push(user);
-  }
-
-  // Create thoughts and reactions for each user
-  const thoughts = [];
-  const reactions = [];
-  users.forEach((user) => {
-    const thought = getRandomThought(user._id);
-    thoughts.push(thought);
-    const reaction = getRandomReaction(user._id, thought._id);
-    reactions.push(reaction);
-  });
-
-  // Insert data into database
-  await User.collection.insertMany(users);
-  await Thought.collection.insertMany(thoughts);
-  await Reaction.collection.insertMany(reactions);
-
-  console.log('Seeding completed successfully!');
-  process.exit(0);
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/socialnetwork_db', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 });
+
+const seedData = async () => {
+  try {
+    // Create users
+    const users = await User.create([
+      { username: 'Bob', email: 'bob@email.com' },
+      { username: 'Carol', email: 'carol@email.com' },
+      { username: 'Ted', email: 'ted@email.com' },
+      { username: 'Alice', email: 'alice@email.com' },
+    ]);
+
+    // Create thoughts
+    const thoughts = await Thought.create([
+      {
+        thoughtText: 'I want to dance!',
+        username: users[0].username,
+      },
+      {
+        thoughtText: 'What ever happened to Ecto Cooler?',
+        username: users[1].username,
+      },
+      {
+        thoughtText: 'Can a woodchuck chuck too much wood if it could chuck wood?',
+        username: users[2].username,
+      },
+      {
+        thoughtText: 'My foot hurts.',
+        username: users[3].username,
+      },
+    ]);
+
+    // Create reactions
+    const reactions = await Reaction.create([
+      {
+        reactionBody: 'Nice thought!',
+        username: users[0].username,
+        thoughtId: thoughts[0]._id,
+      },
+      {
+        reactionBody: 'I disagree',
+        username: users[1].username,
+        thoughtId: thoughts[1]._id,
+      },
+      {
+        reactionBody: 'Same here.',
+        username: users[2].username,
+        thoughtId: thoughts[2]._id,
+      },
+      {
+        reactionBody: 'You idiot!',
+        username: users[3].username,
+        thoughtId: thoughts[3]._id,
+      },
+    ]);
+
+    console.log('Seed data created successfully!');
+    process.exit(0);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+};
+
+seedData();
