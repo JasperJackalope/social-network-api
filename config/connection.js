@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/my_database';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/socialnetwork_db';
 
 mongoose.set('strictQuery', false);
 

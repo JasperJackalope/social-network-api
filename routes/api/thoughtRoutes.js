@@ -11,25 +11,23 @@ const {
 
 const router = express.Router();
 
-// GET all thoughts
-router.get('/thoughts', getThoughts);
+// /api/thoughts
+router.route('/')
+  .get(getThoughts)
+  .post(createThought);
 
-// GET a single thought by its _id
-router.get('/thoughts/:id', getThoughtById);
+// /api/thoughts/:id
+router.route('/:id')
+  .get(getThoughtById)
+  .put(updateThought)
+  .delete(deleteThought);
 
-// POST a new thought
-router.post('/thoughts', createThought);
+// /api/thoughts/:thoughtId/reactions
+router.route('/:thoughtId/reactions')
+  .post(createReaction);
 
-// PUT to update a thought by its _id
-router.put('/thoughts/:id', updateThought);
-
-// DELETE to remove thought by its _id
-router.delete('/thoughts/:id', deleteThought);
-
-// POST to add a new reaction to a thought
-router.post('/thoughts/:thoughtId/reactions', createReaction);
-
-// DELETE to remove a reaction from a thought
-router.delete('/thoughts/:thoughtId/reactions/:reactionId', deleteReaction);
+// /api/thoughts/:thoughtId/reactions/:reactionId
+router.route('/:thoughtId/reactions/:reactionId')
+  .delete(deleteReaction);
 
 module.exports = router;
