@@ -1,51 +1,41 @@
 const connection = require('../config/connection');
-const { Course, Student } = require('../models');
-const { getRandomName, getRandomAssignments } = require('./data');
+const { User, Thought, Reaction } = require('../models');
+const { getRandomUser, getRandomThought, getRandomReaction } = require('./data');
+
+// TODO: Update below:
 
 connection.on('error', (err) => err);
 
 connection.once('open', async () => {
-  console.log('connected');
+  console.log('MongoDB connected successfully');
 
-  // Drop existing courses
-  await Course.deleteMany({});
+  // Delete existing data
+  await User.deleteMany({});
+  await Thought.deleteMany({});
+  await Reaction.deleteMany({});
 
-  // Drop existing students
-  await Student.deleteMany({});
-
-  // Create empty array to hold the students
-  const students = [];
-
-  // Loop 20 times -- add students to the students array
+  // Create users
+  const users = [];
   for (let i = 0; i < 20; i++) {
-    // Get some random assignment objects using a helper function that we imported from ./data
-    const assignments = getRandomAssignments(20);
-
-    const fullName = getRandomName();
-    const first = fullName.split(' ')[0];
-    const last = fullName.split(' ')[1];
-    const github = `${first}${Math.floor(Math.random() * (99 - 18 + 1) + 18)}`;
-
-    students.push({
-      first,
-      last,
-      github,
-      assignments,
-    });
+    const user = getRandomUser();
+    users.push(user);
   }
 
-  // Add students to the collection and await the results
-  await Student.collection.insertMany(students);
-
-  // Add courses to the collection and await the results
-  await Course.collection.insertOne({
-    courseName: 'UCLA',
-    inPerson: false,
-    students: [...students],
+  // Create thoughts and reactions for each user
+  const thoughts = [];
+  const reactions = [];
+  users.forEach((user) => {
+    const thought = getRandomThought(user._id);
+    thoughts.push(thought);
+    const reaction = getRandomReaction(user._id, thought._id);
+    reactions.push(reaction);
   });
 
-  // Log out the seed data to indicate what should appear in the database
-  console.table(students);
-  console.info('Seeding complete! 🌱');
+  // Insert data into database
+  await User.collection.insertMany(users);
+  await Thought.collection.insertMany(thoughts);
+  await Reaction.collection.insertMany(reactions);
+
+  console.log('Seeding completed successfully!');
   process.exit(0);
 });
