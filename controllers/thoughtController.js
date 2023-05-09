@@ -99,21 +99,22 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   // Delete a reaction to a thought
-deleteReaction(req, res) {
-  console.log(req.params)
-
+  deleteReaction(req, res) {
+    console.log(req.params)
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
       { $pull: { reactions: { reactionId: req.params.reactionId} } },
       { runValidators: true, new: true }
     )
-      .then((thought) =>
-        !thought
-          ? res
-              .status(404)
-              .json({ message: 'No thought found with that ID :(' })
-          : res.json(thought)
-      )
+    .then((thought) => {
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought found with that ID :(' });
+      }
+      
+      // Add a message to the response object
+      return res.status(200).json({ message: 'Reaction deleted successfully', thought });
+    })
+    
       .catch((err) => res.status(500).json(err));
   },
 };
