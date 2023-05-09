@@ -1,71 +1,30 @@
-const mongoose = require('mongoose');
-const { User, Thought, Reaction } = require('../models');
+const faker = require('faker');
+const connectDB = require('../config/connection');
+const { User, Thought } = require('../models');
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/socialnetwork_db', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-
-const seedData = async () => {
+const seedDatabase = async () => {
   try {
-    // Create users
-    const users = await User.create([
-      { username: 'Bob', email: 'bob@email.com' },
-      { username: 'Carol', email: 'carol@email.com' },
-      { username: 'Ted', email: 'ted@email.com' },
-      { username: 'Alice', email: 'alice@email.com' },
-    ]);
+    await connectDB();
 
-    // Create thoughts
-    const thoughts = await Thought.create([
-      {
-        thoughtText: 'I want to dance!',
-        username: users[0].username,
-      },
-      {
-        thoughtText: 'What ever happened to Ecto Cooler?',
-        username: users[1].username,
-      },
-      {
-        thoughtText: 'Can a woodchuck chuck too much wood if it could chuck wood?',
-        username: users[2].username,
-      },
-      {
-        thoughtText: 'My foot hurts.',
-        username: users[3].username,
-      },
-    ]);
+    // Clear the database
+    await User.deleteMany({});
+    await Thought.deleteMany({});
 
-    // Create reactions
-    const reactions = await Reaction.create([
-      {
-        reactionBody: 'Nice thought!',
-        username: users[0].username,
-        thoughtId: thoughts[1]._id,
-      },
-      {
-        reactionBody: 'I disagree',
-        username: users[1].username,
-        thoughtId: thoughts[2]._id,
-      },
-      {
-        reactionBody: 'Same here.',
-        username: users[2].username,
-        thoughtId: thoughts[3]._id,
-      },
-      {
-        reactionBody: 'You idiot!',
-        username: users[3].username,
-        thoughtId: thoughts[0]._id,
-      },
-    ]);
+    // Create 5 users and 3 thoughts for each user
+    for (let i = 0; i < 5; i++) {
+      const user = await User.create({ username: faker.internet.userName(), email: faker.internet.email() });
 
-    console.log('Seed data created successfully!');
+      for (let j = 0; j < 3; j++) {
+        await Thought.create({ thoughtText: faker.lorem.sentence(), username: user.username });
+      }
+    }
+
+    console.log('Database seeded successfully');
     process.exit(0);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     process.exit(1);
   }
 };
 
-seedData();
+seedDatabase();
