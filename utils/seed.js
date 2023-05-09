@@ -6,11 +6,9 @@ const seedDatabase = async () => {
   try {
     await connectDB();
 
-    // Clear the database
     await User.deleteMany({});
     await Thought.deleteMany({});
 
-    // Create 5 users and 3 thoughts for each user
     for (let i = 0; i < 5; i++) {
       const user = await User.create({ username: faker.internet.userName(), email: faker.internet.email() });
 

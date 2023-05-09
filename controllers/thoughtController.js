@@ -3,7 +3,6 @@ const { Thought, User } = require("../models");
 module.exports = {
 getAllThoughts(req, res) {
     Thought.find().then((thought) => res.json(thought)).catch((err) => res.status(500).json(err));
-
 },
 createThought(req, res) {
    Thought.create(req.body)
@@ -12,14 +11,11 @@ createThought(req, res) {
            {_id:req.body.userID},
            {$push:{ thoughts:dbThoughtData._id}},
            {new:true}
-
        )
-    
    })
    .then(userData => res.json(userData))
    .catch((err) => res.status(500).json(err));
 },
-//update thought by it's id
 updateThought(req, res) {
     Thought.findOneAndUpdate({
         _id: req.params.id
@@ -32,11 +28,7 @@ updateThought(req, res) {
         !thought ? res.status(404).json({message: 'No thought by ID'}) : res.json(thought);
 
     }).catch((err) => res.status(500).json(err));
-
-
 },
-
-//   getThoughtById
 getThoughtById({ params }, res) {
     Thought.findOne({ _id: params.id })
       .then((dbThoughtData) => {
@@ -52,8 +44,6 @@ getThoughtById({ params }, res) {
         res.status(400).json(err);
       });
   },
-
-// delete a thought
 deleteThought(req, res) {
     Thought.findOneAndDelete({_id: req.params.id})
     .then((thought) => {
@@ -71,7 +61,6 @@ deleteThought(req, res) {
         )
    }).then(() => res.json({message: 'User and associated apps deleted!'})).catch((err) => res.status(500).json(err));
 },
-// add Reaction
 addReaction(req, res) {
     console.log('You are adding a reaction');
     console.log(req.body);
@@ -89,10 +78,6 @@ addReaction(req, res) {
       )
       .catch((err) => res.status(500).json(err));
   },
-
-
-//delete Reaction
-
 deleteReaction(req, res) {
   console.log(req.params)
 
@@ -100,10 +85,8 @@ deleteReaction(req, res) {
       { _id: req.params.thoughtId },
       { $pull: { reactions: { reactionId: req.params.reactionId} } },
       { runValidators: true, new: true }
-      // { new: true }
     )
       .then((thought) =>
-      // console.log("get the deleteReaction")
         !thought
           ? res
               .status(404)
@@ -112,6 +95,4 @@ deleteReaction(req, res) {
       )
       .catch((err) => res.status(500).json(err));
   },
-
-
 };
