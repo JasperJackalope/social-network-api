@@ -60,7 +60,7 @@ The following routes are available in this API:
 
 ## Contributing
 
-I pulled code from various lessons in unit 18 to build my project, including the models, controllers, and routes. I pulled the dateFormat util from GitHub user Morganbb and learned about the Faker seeding from Mozilla Developmer Network. Finally, I used Chat GBT to explain errors in my testing along with finding punctuation errors.
+I pulled code from various lessons in unit 18 to build my project, including the models, controllers, and routes. I pulled the dateFormat util from GitHub user Morganbb and learned about the Faker seeding from Mozilla Developmer Network. Finally, I used Chat GBT to explain errors in my testing along with finding pesky punctuation errors.
 
 ## Additional Information
 
