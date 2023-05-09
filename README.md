@@ -54,10 +54,6 @@ The following routes are available in this API:
 - POST /api/thoughts/:thoughtId/reactions: add a reaction to a thought by ID
 - DELETE /api/thoughts/:thoughtId/reactions/:reactionId: delete a reaction from a thought by ID
 
-### Authentication Routes
-- POST /api/users/login: login a user
-- POST /api/users: create a new user
-
 ## Contributing
 
 I pulled code from various lessons in unit 18 to build my project, including the models, controllers, and routes. I pulled the dateFormat util from GitHub user Morganbb and learned about the Faker seeding from Mozilla Developmer Network. Finally, I used Chat GBT to explain errors in my testing along with finding pesky punctuation errors.
@@ -66,4 +62,4 @@ I pulled code from various lessons in unit 18 to build my project, including the
 
 Link to the GitHub repository: https://github.com/JasperJackalope/social-network-api
 
-Link to the walk-through video:
+Link to the walk-through video: https://drive.google.com/file/d/1GikP84DGduNQpY5J549SprIHlFMy-bDf/view?usp=share_link 
