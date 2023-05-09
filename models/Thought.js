@@ -1,11 +1,14 @@
+// Require Mongoose package
 const {Schema, model, Types} = require("mongoose");
+// Require date format module
 const dateFormat = require("../utils/dateFormat");
 
+// Define Mongoose schema for a reaction
 const reactionSchema = new Schema(
     {
       reactionId: {
         type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId(),
+        default: () => new Types.ObjectId(), // Generates new ID for each reaction
       },
       reactionBody: {
         type: String,
@@ -19,7 +22,7 @@ const reactionSchema = new Schema(
       createdAt: {
         type: Date,
         default: Date.now,
-        get: (createdAtVal) => dateFormat(createdAtVal),
+        get: (createdAtVal) => dateFormat(createdAtVal), // Format date when reading data
       },
     },
     {
@@ -29,6 +32,7 @@ const reactionSchema = new Schema(
     }
   );
 
+// Define Mongoose schema for a thought
 const thoughtSchema = new Schema(
     {
       thoughtText: {
@@ -39,27 +43,28 @@ const thoughtSchema = new Schema(
       createdAt: {
         type: Date,
         default: Date.now,
-        get: (createdAtVal) => dateFormat(createdAtVal),
+        get: (createdAtVal) => dateFormat(createdAtVal), // Format date when reading data
       },
       username: {
         type: String,
         required: true,
       },
-      reactions: [reactionSchema],
+      reactions: [reactionSchema], // Embed reactions in thoughts
     },
     {
       toJSON: {
         virtuals: true,
         getters: true,
       },
-      id: false,
+      id: false, // Exclude "id" virtual field
     }
   );
 
+// Define virtual property "reactionCount" for thought schema
 thoughtSchema.virtual("reactionCount").get(function () {
     return this.reactions.length;
   });
   
-  const Thought = model("Thought", thoughtSchema);
-  
-  module.exports = Thought;
+// Create "Thought" model based on "thoughtSchema" and export it
+const Thought = model("Thought", thoughtSchema);
+module.exports = Thought;
