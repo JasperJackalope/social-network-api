@@ -4,6 +4,8 @@
 
 For this assignment, I was tasked with creating an API for a social media startup that uses a NoSQL database, specifically MongoDB, to handle large amounts of unstructured data. This API allows users to create, read, update, and delete users, thoughts, and reactions. Users can also add and remove friends to their friend list.
 
+I chose to turn this assignment in late as I would rather have functioning code than a rushed project.
+
 ## Table of Contents
 
 - [License](#license)
@@ -58,7 +60,7 @@ The following routes are available in this API:
 
 ## Contributing
 
-I pulled code from various lessons in unit 18 to build my project, including the models, controllers, and routes. I pulled the dateFormat util from GitHub user Morganbb and learned about the Faker seeding from Mozilla Developmer Network. Finally, I used Chat GBT to explain errors in my testing along with findhing punctuation errors.
+I pulled code from various lessons in unit 18 to build my project, including the models, controllers, and routes. I pulled the dateFormat util from GitHub user Morganbb and learned about the Faker seeding from Mozilla Developmer Network. Finally, I used Chat GBT to explain errors in my testing along with finding punctuation errors.
 
 ## Additional Information
 
