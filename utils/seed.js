@@ -41,22 +41,22 @@ const seedData = async () => {
       {
         reactionBody: 'Nice thought!',
         username: users[0].username,
-        thoughtId: thoughts[0]._id,
+        thoughtId: thoughts[1]._id,
       },
       {
         reactionBody: 'I disagree',
         username: users[1].username,
-        thoughtId: thoughts[1]._id,
+        thoughtId: thoughts[2]._id,
       },
       {
         reactionBody: 'Same here.',
         username: users[2].username,
-        thoughtId: thoughts[2]._id,
+        thoughtId: thoughts[3]._id,
       },
       {
         reactionBody: 'You idiot!',
         username: users[3].username,
-        thoughtId: thoughts[3]._id,
+        thoughtId: thoughts[0]._id,
       },
     ]);
 
